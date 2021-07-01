@@ -25,3 +25,4 @@
 $string['pluginname'] = 'Kurslöschen-Schritt';
 
 $string['deletecourse_maximumdeletionspercron'] = 'Maximale Anzahl an Kurslöschungen per cron';
+$string['searchdeletedcourses'] = 'Gelöschte Kurse';

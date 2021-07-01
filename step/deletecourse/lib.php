@@ -57,11 +57,23 @@ class deletecourse extends libbase {
      * @throws \dml_exception
      */
     public function process_course($processid, $instanceid, $course) {
+        global $DB;
+
         if (self::$numberofdeletions >= settings_manager::get_settings(
             $instanceid, settings_type::STEP)['maximumdeletionspercron']) {
             return step_response::waiting(); // Wait with further deletions til the next cron run.
         }
+
+        $courseduprecord = new \stdClass();
+        $courseduprecord->id = $course->id;
+        $courseduprecord->shortname = $course->shortname;
+        $courseduprecord->fullname = $course->fullname;
+        $courseduprecord->idnumber = $course->idnumber;
+
         delete_course($course->id, true);
+
+        $DB->insert_record_raw('lifecyclestep_deletecourse_c', $courseduprecord, false, false, true);
+
         self::$numberofdeletions++;
         return step_response::proceed();
     }

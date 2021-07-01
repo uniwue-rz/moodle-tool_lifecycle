@@ -42,6 +42,9 @@ defined('MOODLE_INTERNAL') || die();
  */
 function xmldb_lifecyclestep_deletecourse_upgrade($oldversion) {
 
+    global $DB;
+    $dbman = $DB->get_manager();
+
     if ($oldversion < 2018122300) {
 
         $coursedeletesteps = step_manager::get_step_instances_by_subpluginname('deletecourse');
@@ -59,4 +62,26 @@ function xmldb_lifecyclestep_deletecourse_upgrade($oldversion) {
         upgrade_plugin_savepoint(true, 2018122300, 'lifecyclestep', 'deletecourse');
     }
 
+    if ($oldversion < 2021070100) {
+
+        // Define table lifecyclestep_deletecourse_c to be created.
+        $table = new xmldb_table('lifecyclestep_deletecourse_c');
+
+        // Adding fields to table lifecyclestep_deletecourse_c.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('fullname', XMLDB_TYPE_CHAR, '254', null, null, null, null);
+        $table->add_field('shortname', XMLDB_TYPE_CHAR, '255', null, null, null, null);
+        $table->add_field('idnumber', XMLDB_TYPE_CHAR, '100', null, null, null, null);
+
+        // Adding keys to table lifecyclestep_deletecourse_c.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for lifecyclestep_deletecourse_c.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Deletecourse savepoint reached.
+        upgrade_plugin_savepoint(true, 2021070100, 'lifecyclestep', 'deletecourse');
+    }
 }

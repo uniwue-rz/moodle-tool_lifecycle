@@ -25,3 +25,5 @@
 $string['pluginname'] = 'Delete course step';
 
 $string['deletecourse_maximumdeletionspercron'] = 'Maximum number of courses deleted per cron';
+$string['searchdeletedcourses'] = 'Search deleted courses';
+$string['id'] = 'ID';
