@@ -30,7 +30,6 @@ require_capability('moodle/site:config', context_system::instance());
 
 admin_externalpage_setup('tool_lifecycle_activeprocesses');
 
-$PAGE->set_url(new \moodle_url('/admin/tool/lifecycle/activeprocesses.php'));
 
 $table = new tool_lifecycle\local\table\active_processes_table('tool_lifecycle_active_processes');
 
